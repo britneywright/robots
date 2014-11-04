@@ -1,13 +1,12 @@
 require 'artoo'
 require 'tweetstream'
 
-# don't abuse my account info please
 TweetStream.configure do |config|
-  config.consumer_key       = 'cOWPQXxDK1WklR27E7GZUU6Cw'
-  config.consumer_secret    = 'hOSeZ3yy90AR4pbwBInbL1Ubut5W2Mu63tZDql1J6zmWvsh3GA'
-  config.oauth_token        = '26582920-GsSQnZKDGA6cjIBv9PbEx32TdMe1Kx3tkBDXujG8P'
-  config.oauth_token_secret = 'LSM5QihfOLZDhgI5oC192vvlYFbjCTXHm8UYyIhffZuAx'
-  config.auth_method        = :oauth
+  config.consumer_key = ENV.fetch 'CONSUMER_KEY'
+  config.consumer_secret = ENV.fetch 'CONSUMER_SECRET'
+  config.oauth_token = ENV.fetch 'OAUTH_TOKEN'
+  config.oauth_token_secret = ENV.fetch 'OAUTH_TOKEN_SECRET'
+  config.auth_method = :oauth
 end
 
 connection :firmata, :adaptor => :firmata, :port => '/dev/cu.usbmodem411' # :port path may vary
@@ -18,7 +17,7 @@ device :green_led, :driver => :led, :pin => 12
 positive = /good|easy|happy|ahead|inspire/i  
 negative = /ugh|stuck|behind|fail|damn/i
 
-# include lines 23, 25 and 42 if you want to limit the number of tweets returned.
+# include lines 22, 24 and 41 if you want to limit the number of tweets returned.
 work do
   # @statuses = []
   TweetStream::Client.new.track("#NaNoWriMo") do |status,client|
